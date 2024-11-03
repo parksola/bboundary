@@ -1,0 +1,552 @@
+﻿<krpano version="1.21" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+	
+
+	
+	<scene name="scene_truckcubeimg" title="truckcubeimg" onstart="" thumburl="panos/truckcubeimg.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/truckcubeimg.tiles/preview.jpg" />
+		
+		 <plugin name="soundinterface" preload="true" keep="true"
+            url.flash="%VIEWER%/plugins/soundinterface.swf"
+            url.html5="%VIEWER%/plugins/soundinterface.js"
+            rootpath="%CURRENTXML%" />
+
+			
+
+    <!-- 배경음악 설정 -->
+    <action name="start_background_music">
+        playsound(bg_music, 'back.mp3', 0);  <!-- 배경음악 재생, 루프 설정 -->
+    </action>
+	 <events onloadcomplete="start_background_music();" />
+	 <image>
+			<cube url="panos/truckcubeimg.tiles/pano_%s.jpg" />
+		</image>
+
+
+
+
+
+		<!-- 여러 핫스팟 정의 -->
+        <hotspot name="hotspot_1" url="Model1.png" ath="-65" atv="40" scale="1" zorder="18" visible="true" />
+        <hotspot name="hotspot_2" url="백산수바나나.png" ath="12" atv="7.2" scale="0.3" zorder="16"  distorted="true" visible="true" />
+    	<hotspot name="hotspot_3" url="Model9.png"  ath="-180" atv="26.5" scale="1" zorder="1" visible="true"  />  <!-- 라디오 핫스팟 위치 설정 -->
+    	<hotspot name="hotspot_4" url="Model2.png"  ath="65" atv="50" scale="0.5" zorder="16" visible="true"  />
+
+
+		  <!-- 움직이는 핫스팟 정의 -->
+        <hotspot name="dangling_hotspot"
+                 url="연등1.png"
+                 ath="-4" atv="-35"
+                 scale="0.33"
+              rotate="0"
+			  zorder="16"
+         distorted="true"
+         edge="top" 
+         />
+		 <hotspot name="dangling_hotspot2"
+                 url="키링1.png"
+                 ath="2" atv="-36"
+                 scale="0.32"
+              rotate="0"
+			  zorder="15"
+         distorted="true"
+         edge="top" 
+         />
+		 <hotspot name="clunking_hotspot"
+         url="배달.png"
+         ath="15" atv="3"
+         scale="0.35"
+         distorted="true"
+		 zorder="15" 
+         />
+
+
+      <!-- 핫스팟 1 애니메이션 -->
+<action name="swing_dangling_hotspot">
+    tween(hotspot[dangling_hotspot].rotate, -15, 0.5, linear, swing_back());
+</action>
+
+<action name="swing_back">
+    tween(hotspot[dangling_hotspot].rotate, 15, 0.5, linear, swing_dangling_hotspot());
+</action>
+
+<!-- 핫스팟 2 애니메이션 -->
+<action name="swing_dangling_hotspot2">
+    tween(hotspot[dangling_hotspot2].rotate, -20, 0.3, easeInOutQuad, swing_back_variant());
+    tween(hotspot[dangling_hotspot2].atv, calc(hotspot[dangling_hotspot2].atv + 1), 0.3, easeInOutQuad);
+</action>
+
+<action name="swing_back_variant">
+    tween(hotspot[dangling_hotspot2].rotate, 10, 0.3, easeInOutQuad, swing_dangling_hotspot2());
+    tween(hotspot[dangling_hotspot2].atv, calc(hotspot[dangling_hotspot2].atv - 1), 0.3, easeInOutQuad);
+</action>
+
+
+<!-- 덜커덩 모션 액션 정의 -->
+<action name="clunk_up">
+    tween(hotspot[clunking_hotspot].atv, calc(hotspot[clunking_hotspot].atv - 1), 0.3, linear, clunk_down()); <!-- 위로 이동 후 아래로 이동 액션 호출 -->
+	tween(hotspot[hotspot_2].atv, calc(hotspot[hotspot_2].atv - 1), 0.3, linear, clunk_down()); 
+	tween(hotspot[hotspot_1].atv, calc(hotspot[hotspot_1].atv - 1), 0.3, linear, clunk_down());
+	
+	
+</action>
+
+<action name="clunk_down">
+    tween(hotspot[clunking_hotspot].atv, calc(hotspot[clunking_hotspot].atv + 1), 0.3, easeOutBounce, clunk_up()); <!-- 아래로 이동 후 다시 위로 이동 액션 호출 -->
+	tween(hotspot[hotspot_2].atv, calc(hotspot[hotspot_2].atv + 1), 0.3, linear, clunk_up());
+	tween(hotspot[hotspot_1].atv, calc(hotspot[hotspot_1].atv + 1), 0.3, easeOutBounce, clunk_up());
+
+</action>
+
+<!-- 페이지 로드 시 덜커덩 모션 시작 -->
+<events onloadcomplete="clunk_up();" />
+
+
+
+
+    <!-- f ~ f13 핫스팟 정의 -->
+<hotspot name="image_f" url="f/f.png" ath="0" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_f1" url="f/f1.png" ath="0" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_f2" url="f/f2.png" ath="0" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_f3" url="f/f3.png" ath="0" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_f4" url="f/f4.png" ath="0" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_f5" url="f/f5.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f6" url="f/f6.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f7" url="f/f7.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f8" url="f/f8.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f9" url="f/f9.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f10" url="f/f10.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f11" url="f/f11.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f12" url="f/f12.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_f13" url="f/f13.png" ath="0" atv="10" scale="1" zorder="16" visible="true" />
+
+
+<hotspot name="image_h" url="h/h.png" ath="10" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_h1" url="h/h1.png" ath="10" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_h2" url="h/h2.png" ath="10" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_h3" url="h/h3.png" ath="10" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_h4" url="h/h4.png" ath="10" atv="10" scale="1" zorder="16"  visible="true" />
+<hotspot name="image_h5" url="h/h5.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h6" url="h/h6.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h7" url="h/h7.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h8" url="h/h8.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h9" url="h/h9.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h10" url="h/h10.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h11" url="h/h11.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h12" url="h/h12.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h13" url="h/h13.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h14" url="h/h14.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h15" url="h/h15.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+<hotspot name="image_h16" url="h/h16.png" ath="10" atv="10" scale="1" zorder="16" visible="true" />
+
+
+
+
+
+ 
+
+
+
+
+<!-- 줌 레벨에 따른 모든 핫스팟 보이기/숨기기 설정 -->
+<action name="check_all_zoom_levels">
+    if(view.fov LE 140,
+	 	 set(hotspot[image_f].visible, true);
+        set(hotspot[image_f1].visible, false);
+        set(hotspot[image_f2].visible, false);
+        set(hotspot[image_f3].visible, false);
+        set(hotspot[image_f4].visible, false);
+        set(hotspot[image_f5].visible, false);
+        set(hotspot[image_f6].visible, false);
+        set(hotspot[image_f7].visible, false);
+        set(hotspot[image_f8].visible, false);
+        set(hotspot[image_f9].visible, false);
+        set(hotspot[image_f10].visible, false);
+        set(hotspot[image_f11].visible, false);
+        set(hotspot[image_f12].visible, false);
+        set(hotspot[image_f13].visible, false);
+		set(hotspot[zoomed_in_moving_hotspot].visible, true); 
+
+        set(hotspot[image_h].visible, false);
+        set(hotspot[image_h1].visible, false);
+        set(hotspot[image_h2].visible, false);
+        set(hotspot[image_h3].visible, false);
+        set(hotspot[image_h4].visible, false);
+        set(hotspot[image_h5].visible, false);
+        set(hotspot[image_h6].visible, false);
+        set(hotspot[image_h7].visible, false);
+        set(hotspot[image_h8].visible, false);
+        set(hotspot[image_h9].visible, false);
+        set(hotspot[image_h10].visible, false);
+        set(hotspot[image_h11].visible, false);
+        set(hotspot[image_h12].visible, false);
+        set(hotspot[image_h13].visible, false);
+		set(hotspot[image_h14].visible, false);
+        set(hotspot[image_h15].visible, false);
+        set(hotspot[image_h16].visible, false);
+		
+    );
+    if(view.fov LE 139,
+        set(hotspot[image_f].visible, false);
+        set(hotspot[image_f1].visible, true);
+    );
+    if(view.fov LE 138.9,
+        set(hotspot[image_f1].visible, false);
+        set(hotspot[image_f2].visible, true);
+    );
+    if(view.fov LE 138.8,
+        set(hotspot[image_f2].visible, false);
+        set(hotspot[image_f3].visible, true);
+    );
+    if(view.fov LE 138.7,
+        set(hotspot[image_f3].visible, false);
+        set(hotspot[image_f4].visible, true);
+    );
+    if(view.fov LE 137.6,
+        set(hotspot[image_f4].visible, false);
+        set(hotspot[image_f5].visible, true);
+    );
+    if(view.fov LE 137.5,
+        set(hotspot[image_f5].visible, false);
+        set(hotspot[image_f6].visible, true);
+    );
+    if(view.fov LE 137.4,
+        set(hotspot[image_f6].visible, false);
+        set(hotspot[image_f7].visible, true);
+    );
+    if(view.fov LE 137.3,
+        set(hotspot[image_f7].visible, false);
+        set(hotspot[image_f8].visible, true);
+    );
+    if(view.fov LE 137.2,
+        set(hotspot[image_f8].visible, false);
+        set(hotspot[image_f9].visible, true);
+    );
+    if(view.fov LE 137.1,
+        set(hotspot[image_f9].visible, false);
+        set(hotspot[image_f10].visible, true);
+    );
+    if(view.fov LE 137,
+        set(hotspot[image_f10].visible, false);
+        set(hotspot[image_f11].visible, true);
+    );
+    if(view.fov LE 136.9,
+        set(hotspot[image_f11].visible, false);
+        set(hotspot[image_f12].visible, true);
+    );
+    if(view.fov LE 136.8,
+        set(hotspot[image_f12].visible, false);
+        set(hotspot[image_f13].visible, true);
+    );
+    if(view.fov LE 136.7,
+        set(hotspot[image_f13].visible, false);
+    );
+
+
+	if(view.fov LE 136.7,
+		set(hotspot[image_h].visible, false);
+		set(hotspot[image_h1].visible, true);
+	);
+	if(view.fov LE 136.5,
+		set(hotspot[image_h1].visible, false);
+		set(hotspot[image_h2].visible, true);
+	);
+	if(view.fov LE 136.4,
+		set(hotspot[image_h2].visible, false);
+		set(hotspot[image_h3].visible, true);
+	);
+	if(view.fov LE 136.3,
+		set(hotspot[image_h3].visible, false);
+		set(hotspot[image_h4].visible, true);
+	);
+	if(view.fov LE 136.2,
+		set(hotspot[image_h4].visible, false);
+		set(hotspot[image_h5].visible, true);
+	);
+	if(view.fov LE 136.1,
+		set(hotspot[image_h5].visible, false);
+		set(hotspot[image_h6].visible, true);
+	);
+	if(view.fov LE 136,
+		set(hotspot[image_h6].visible, false);
+		set(hotspot[image_h7].visible, true);
+	);
+	if(view.fov LE 135.9,
+		set(hotspot[image_h7].visible, false);
+		set(hotspot[image_h8].visible, true);
+	);
+	if(view.fov LE 135.8,
+		set(hotspot[image_h8].visible, false);
+		set(hotspot[image_h9].visible, true);
+	);
+	if(view.fov LE 135.7,
+		set(hotspot[image_h9].visible, false);
+		set(hotspot[image_h10].visible, true);
+	);
+	if(view.fov LE 135.6,
+		set(hotspot[image_h10].visible, false);
+		set(hotspot[image_h11].visible, true);
+	);
+	if(view.fov LE 135.5,
+		set(hotspot[image_h11].visible, false);
+		set(hotspot[image_h12].visible, true);
+	);
+	if(view.fov LE 135.4,
+		set(hotspot[image_h12].visible, false);
+		set(hotspot[image_h13].visible, true);
+	);
+	if(view.fov LE 135.3,
+		set(hotspot[image_h13].visible, false);
+		set(hotspot[image_h14].visible, true);
+	);
+	if(view.fov LE 135.2,
+		set(hotspot[image_h14].visible, false);
+		set(hotspot[image_h15].visible, true);
+	);
+	if(view.fov LE 135.1,
+		set(hotspot[image_h15].visible, false);
+		set(hotspot[image_h16].visible, true);
+	
+	);
+	if(view.fov LE 135,
+		set(hotspot[image_h16].visible, false);
+		set(hotspot[zoomed_in_moving_hotspot].visible, false); 
+	);
+
+
+    if(view.fov GE 140,
+        set(hotspot[video_hotspot].visible, true);
+    );
+    if(view.fov LT 139,
+        set(hotspot[video_hotspot].visible, false);
+    );
+
+    if(view.fov GT 120,
+       
+        set(hotspot[hotspot_7].visible, true);
+     
+    );
+    if(view.fov LE 120,
+        
+        set(hotspot[hotspot_7].visible, false);
+       
+    );
+   
+    if(view.fov GT 100,
+        set(hotspot[hotspot_1].visible, true); 
+		
+    );
+    if(view.fov LE 100,
+        set(hotspot[hotspot_1].visible, false);
+	
+    );
+</action>
+
+
+<!-- 최대 줌인 시 보이게) -->
+<hotspot name="zoomed_in_hotspot" url="라디오화면2.png" ath="-3" atv="26.5" scale="1.3" zorder="20" visible="false" />
+<hotspot name="zoomed_in_hotspot2" url="커플사진.png" ath="2" atv="-27" scale="1.1" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot3" url="운전자의기도.png" ath="0" atv="55" scale="0.8" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot4" url="향기3.png" ath="-5" atv="13" scale="1.1" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot5" url="어버이2.png" ath="38" atv="15" scale="0.9" rotate="-20" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot6" url="스마일.png" ath="113" atv="59" scale="1.4" rotate="-20" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot7" url="지우2.png" ath="-32" atv="16" scale="1.1" zorder="15" visible="false" />
+<hotspot name="zoomed_in_hotspot8" url="영수증.png" ath="-5" atv="75" scale="0.9" zorder="15" visible="false" />
+
+<hotspot name="zoomed_out_hotspot" url="담배.png" ath="-90" atv="60" scale="1" zorder="20" visible="false" />
+<hotspot name="zoomed_out_hotspot2" url="폰.png" ath="-80" atv="65" scale="1" zorder="20" visible="false" />
+<hotspot name="zoomed_out_hotspot3" url="지갑.png" ath="-100" atv="60" scale="1" zorder="20" visible="false" />
+
+
+<action name="show_zoomed_in_hotspot">
+    if(view.fov LE view.fovmin,
+        set(hotspot[zoomed_in_hotspot].visible, true);
+		set(hotspot[zoomed_in_hotspot2].visible, true);
+		set(hotspot[zoomed_in_hotspot3].visible, true);
+		set(hotspot[zoomed_in_hotspot4].visible, true);
+		set(hotspot[zoomed_in_hotspot5].visible, true);
+		set(hotspot[zoomed_in_hotspot6].visible, true);
+		set(hotspot[zoomed_in_hotspot7].visible, true);
+		set(hotspot[zoomed_in_hotspot8].visible, true);
+
+		set(hotspot[hotspot_4].visible, true); 
+		set(hotspot[hotspot_3].visible, true); 
+
+		set(hotspot[zoomed_out_hotspot].visible, true);
+		set(hotspot[zoomed_out_hotspot2].visible, true);
+		set(hotspot[zoomed_out_hotspot3].visible, true);
+
+    ,
+        set(hotspot[zoomed_in_hotspot].visible, false);
+		set(hotspot[zoomed_in_hotspot2].visible, false);
+		set(hotspot[zoomed_in_hotspot3].visible, false);
+		set(hotspot[zoomed_in_hotspot4].visible, false);
+		set(hotspot[zoomed_in_hotspot5].visible, false);
+		set(hotspot[zoomed_in_hotspot6].visible, false);
+		set(hotspot[zoomed_in_hotspot7].visible, false);
+		set(hotspot[zoomed_in_hotspot8].visible, false);
+		
+		set(hotspot[hotspot_4].visible, false);
+		set(hotspot[hotspot_3].visible, false); 
+
+		set(hotspot[zoomed_out_hotspot].visible, false);
+		set(hotspot[zoomed_out_hotspot2].visible, false);
+		set(hotspot[zoomed_out_hotspot3].visible, false);
+    );
+</action>
+
+
+
+<!-- 줌 레벨 변경 시 액션 호출 -->
+<events onviewchange="check_all_zoom_levels(); show_zoomed_in_hotspot(); show_zoomed_out_hotspot(); " />
+
+
+
+
+
+
+
+<!--진동-->
+<action name="start_shake_effect">
+    shake_view();
+</action>
+
+<action name="shake_view">
+    set(view.hlookat, calc(view.hlookat + (random(0.4) - 0.5 ))); <!-- 수평 진동 -->
+    set(view.vlookat, calc(view.vlookat + (random(0.4) - 0.5))); <!-- 수직 진동 -->
+    delayedcall(0.05, shake_view()); <!-- 0.05초 후에 다시 진동 -->
+</action>
+
+
+
+
+
+<!-- 확대된 상태에서 깜빡이고 움직이는 핫스팟 정의 -->
+<hotspot name="zoomed_in_moving_hotspot" url="Model1_2.png" ath="-65" atv="40" scale="1" visible="true" zorder="20" />
+
+<!-- 깜빡거리는 효과 액션 -->
+<action name="blink_hotspot">
+    tween(hotspot[zoomed_in_moving_hotspot].alpha, 0, 0.5, easeInOutQuad, fade_in_hotspot());
+</action>
+
+<action name="fade_in_hotspot">
+    tween(hotspot[zoomed_in_moving_hotspot].alpha, 0.5, 0.6, easeInOutQuad, blink_hotspot());
+</action>
+
+<!-- 흔들리는 효과 액션 -->
+<action name="shake_hotspot">
+      <!-- ath 값을 -65를 중심으로 랜덤하게 불규칙하게 이동 -->
+    tween(hotspot[zoomed_in_moving_hotspot].ath, calc(-65 + (random(2) - 1)), 0.2 + random(0.3), linear);
+    <!-- atv 값을 40을 중심으로 랜덤하게 불규칙하게 이동 -->
+    tween(hotspot[zoomed_in_moving_hotspot].atv, calc(40 + (random(2) - 1)), 0.2 + random(0.3), linear, haunted_shake());
+
+<!-- 줌 상태에서만 효과를 활성화 -->
+</action>
+<action name="start_blink_and_shake">
+    if(view.fov GE view.fovmax,
+        blink_hotspot();
+        shake_hotspot();
+		fade_in_hotspot();
+    );
+</action>
+
+
+<!-- 줌 레벨 변경 시 해당 효과를 확인하고 실행 -->
+<events onviewchange="
+    check_all_zoom_levels();
+    show_zoomed_in_hotspot();
+ 
+    start_blink_and_shake();" />
+
+<!-- 페이지 로드 시 효과들 초기화 -->
+<events onloadcomplete="
+    start_background_music();
+    clunk_up();
+    swing_dangling_hotspot();
+    swing_dangling_hotspot2();
+    start_shake_effect();
+    check_all_zoom_levels();
+    show_zoomed_in_hotspot();
+   
+    " />
+
+ </scene>
+
+		
+
+
+
+</krpano>
